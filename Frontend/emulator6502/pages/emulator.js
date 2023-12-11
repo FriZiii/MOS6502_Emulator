@@ -8,7 +8,7 @@ import useAssembler from '../hooks/useAssembler'
 
 import MemoryMap from '../components/memory-map';
 
-const Emulator = ({ naviagtion }) => {
+const Emulator = () => {
   const { startAssembly } = useAssembler()
   const snapPoints = useMemo(() => ['8%', '55%'], []);
   const [programInput, setProgramInput] = useState('');
