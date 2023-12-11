@@ -6,7 +6,7 @@ export default function Instruction({naviagtion}) {
     return (
         <GestureHandlerRootView  style={styles.container}>
             <ScrollView>
-                <Text style={styles.header}> Instructions </Text>
+                <Text style={styles.header}>Instructions </Text>
                 <View>
                     <Pressable style={styles.buttonStyle}><Text style={styles.buttonTextStyle}>Addition</Text></Pressable>
                     <Text style={styles.operationDescText}>This instruction will load 5 into accumulator (LDA #5), then add 7 to accumulator (ADC #7) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
@@ -66,20 +66,21 @@ export default function Instruction({naviagtion}) {
                 </View>
             </ScrollView>
         </GestureHandlerRootView>
-        
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
+        padding: 12,
         marginTop: 20,
     },
     header: {
-        fontSize: 26,
+        marginTop: 8,
+        fontSize: 28,
+        fontWeight: '500',
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 8,
     },
     header2: {
         fontSize: 22,
