@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import * as React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
+import HoverButton from '../components/hover-button'
 
 const Instruction = ({ setProgramInput }) => {
     const navigation = useNavigation()
@@ -12,40 +13,34 @@ const Instruction = ({ setProgramInput }) => {
                 <View style={styles.container}>
                     <Text style={styles.header}>Instructions </Text>
                     <View>
-                        <Pressable style={styles.buttonStyle}
-                            onPress={() => {
-                                setProgramInput("LDA #5\nADC #7\nSTA $1E");
+                        <HoverButton text="Addition" onPress={() => {
+                                setProgramInput("CLC\nLDA #5\nADC #7\nSTA $1E");
                                 navigation.navigate('Emulator')
-                            }}>
-                            <Text style={styles.buttonTextStyle}>Addition</Text>
-                        </Pressable>
-                        <Text style={styles.operationDescText}>This instruction will load 5 into accumulator (LDA #5), then add 7 to accumulator (ADC #7) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
+                            }}
+                            additionalStyles={styles.buttonCustomStyle}/>
+                        <Text style={styles.operationDescText}>This instruction will clear the carry flag (CLC), load 5 into accumulator (LDA #5), then add 7 to accumulator (ADC #7) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
 
-                        <Pressable style={styles.buttonStyle}
-                            onPress={() => {
-                                setProgramInput("LDA #8\nSBC #3\nSTA $1E");
+                        <HoverButton text="Subtraction" onPress={() => {
+                                setProgramInput("SEC\nLDA #8\nSBC #3\nSTA $1E");
                                 navigation.navigate('Emulator')
-                            }}>
-                            <Text style={styles.buttonTextStyle}>Subtraction</Text>
-                        </Pressable>
-                        <Text style={styles.operationDescText}>This instruction will load 8 into accumulator (LDA #8), then subtract 3 from accumulator (SBC #3) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
+                            }}
+                            additionalStyles={styles.buttonCustomStyle}/>
+                        <Text style={styles.operationDescText}>This instruction will set the carry flag (SEC), load 8 into accumulator (LDA #8), then subtract 3 from accumulator (SBC #3) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
 
-                        <Pressable style={styles.buttonStyle}
-                            onPress={() => {
+                        
+                        <HoverButton text="Multiplication" onPress={() => {
                                 setProgramInput("LDA #20\nASL\nSTA $1E");
                                 navigation.navigate('Emulator')
-                            }}>
-                            <Text style={styles.buttonTextStyle}>Multiplication</Text>
-                        </Pressable>
+                            }}
+                            additionalStyles={styles.buttonCustomStyle}/>
                         <Text style={styles.operationDescText}>This instruction will load 20 into accumulator (LDA #20), then shift 1 bit left on the number in accumulator (ASL) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
 
-                        <Pressable style={styles.buttonStyle}
-                            onPress={() => {
+    
+                        <HoverButton text="Division" onPress={() => {
                                 setProgramInput("LDA #8\nLSR\nSTA $1E");
                                 navigation.navigate('Emulator')
-                            }}>
-                            <Text style={styles.buttonTextStyle}>Division</Text>
-                        </Pressable>
+                            }}
+                            additionalStyles={styles.buttonCustomStyle}/>
                         <Text style={styles.operationDescText}>This instruction will load 8 into accumulator (LDA #8), then shift 1 bit right on the number in accumulator (LSR) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
                     </View>
 
@@ -121,22 +116,9 @@ const styles = StyleSheet.create({
         marginTop: 30,
         marginBottom: 10,
     },
-    buttonStyle: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        borderRadius: 5,
-        backgroundColor: 'black',
+    buttonCustomStyle: {
         marginVertical: 8,
         marginTop: 30,
-    },
-    buttonTextStyle: {
-        fontSize: 16,
-        lineHeight: 21,
-        fontWeight: 'bold',
-        letterSpacing: 0.25,
-        color: 'white',
     },
     operationDescText: {
         paddingHorizontal: 10,

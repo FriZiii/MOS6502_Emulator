@@ -7,6 +7,7 @@ import axios from "axios";
 import useAssembler from '../hooks/useAssembler'
 
 import MemoryMap from '../components/memory-map';
+import HoverButton from '../components/hover-button';
 
 const Emulator = ({ programInput, setProgramInput }) => {
   const { startAssembly } = useAssembler()
@@ -84,8 +85,8 @@ const Emulator = ({ programInput, setProgramInput }) => {
         style={styles.input}
       />
       <View style={styles.buttonsContainer}>
-        <Pressable style={styles.buttonLeftStyle} onPress={loadProgramHandler}><Text style={styles.buttonTextStyle}>Load Program</Text></Pressable>
-        <Pressable style={styles.buttonRightStyle} onPress={nextStepHandler}><Text style={styles.buttonTextStyle}>Next Step</Text></Pressable>
+        <HoverButton text="Load Program" onPress={loadProgramHandler} additionalStyles={styles.buttonLeftStyle}/>
+        <HoverButton text="Next Step" onPress={nextStepHandler} additionalStyles={styles.buttonRightStyle}/>
       </View>
 
       <Text style={styles.propertiesheader}>Processor State</Text>
@@ -195,22 +196,10 @@ const styles = StyleSheet.create({
   },
   buttonLeftStyle: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: 'black',
     marginRight: 10,
   },
   buttonRightStyle: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: 'black',
     marginLeft: 10,
   },
   buttonTextStyle: {
