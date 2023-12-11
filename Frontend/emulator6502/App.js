@@ -1,5 +1,4 @@
-import * as React from 'react'
-
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,8 +6,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Instructionscreen from './pages/instruction'
 import Emulatorscreen from './pages/emulator'
 
-
 const App = () => {
+  const [programInput, setProgramInput] = useState('');
 
   const emulatorName = 'Emulator'
   const instructionName = 'Instruction'
@@ -35,8 +34,12 @@ const App = () => {
           tabBarItemStyle: { flexDirection: 'column' },
         })}>
 
-        <Tab.Screen name={emulatorName} component={Emulatorscreen} options={{ headerShown: false }} />
-        <Tab.Screen name={instructionName} component={Instructionscreen} options={{ headerShown: false }} />
+        <Tab.Screen name={emulatorName} options={{ headerShown: false }} >
+          {() => <Emulatorscreen setProgramInput={setProgramInput} programInput={programInput} />}
+        </Tab.Screen>
+        <Tab.Screen name={instructionName} options={{ headerShown: false }} >
+        {() => <Instructionscreen setProgramInput={setProgramInput} />}
+        </Tab.Screen>
 
       </Tab.Navigator>
     </NavigationContainer>

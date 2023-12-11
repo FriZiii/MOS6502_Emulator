@@ -1,29 +1,54 @@
 import { useNavigation } from '@react-navigation/native'
 import * as React from 'react'
-import {View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 
-export default function Instruction() {
+const Instruction = ({ setProgramInput }) => {
     const navigation = useNavigation()
-    const navigateToEmulator = () => {
-        navigation.navigate('Emulator')
-    }
 
     return (
-        <GestureHandlerRootView  style={styles.container}>
+        <GestureHandlerRootView style={styles.container}>
             <ScrollView>
-                <View  style={styles.container}>
+                <View style={styles.container}>
                     <Text style={styles.header}>Instructions </Text>
                     <View>
-                        <Pressable style={styles.buttonStyle} onPress={navigateToEmulator}><Text style={styles.buttonTextStyle}>Addition</Text></Pressable>
+                        <Pressable style={styles.buttonStyle}
+                            onPress={() => {
+                                setProgramInput("LDA #5\nADC #7\nSTA $1E");
+                                navigation.navigate('Emulator')
+                            }}>
+                            <Text style={styles.buttonTextStyle}>Addition</Text>
+                        </Pressable>
                         <Text style={styles.operationDescText}>This instruction will load 5 into accumulator (LDA #5), then add 7 to accumulator (ADC #7) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
-                        <Pressable style={styles.buttonStyle}><Text style={styles.buttonTextStyle}>Subtraction</Text></Pressable>
+
+                        <Pressable style={styles.buttonStyle}
+                            onPress={() => {
+                                setProgramInput("LDA #8\nSBC #3\nSTA $1E");
+                                navigation.navigate('Emulator')
+                            }}>
+                            <Text style={styles.buttonTextStyle}>Subtraction</Text>
+                        </Pressable>
                         <Text style={styles.operationDescText}>This instruction will load 8 into accumulator (LDA #8), then subtract 3 from accumulator (SBC #3) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
-                        <Pressable style={styles.buttonStyle}><Text style={styles.buttonTextStyle}>Multiplication</Text></Pressable>
+
+                        <Pressable style={styles.buttonStyle}
+                            onPress={() => {
+                                setProgramInput("LDA #20\nASL\nSTA $1E");
+                                navigation.navigate('Emulator')
+                            }}>
+                            <Text style={styles.buttonTextStyle}>Multiplication</Text>
+                        </Pressable>
                         <Text style={styles.operationDescText}>This instruction will load 20 into accumulator (LDA #20), then shift 1 bit left on the number in accumulator (ASL) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
-                        <Pressable style={styles.buttonStyle}><Text style={styles.buttonTextStyle}>Division</Text></Pressable>
+
+                        <Pressable style={styles.buttonStyle}
+                            onPress={() => {
+                                setProgramInput("LDA #8\nLSR\nSTA $1E");
+                                navigation.navigate('Emulator')
+                            }}>
+                            <Text style={styles.buttonTextStyle}>Division</Text>
+                        </Pressable>
                         <Text style={styles.operationDescText}>This instruction will load 8 into accumulator (LDA #8), then shift 1 bit right on the number in accumulator (LSR) and at the end will load number from accumulator to memory address 0003 (STA $1E)</Text>
                     </View>
+
                     <View>
                         <Text style={styles.header2}>Supported operations</Text>
                         <View style={styles.instructionList}>
@@ -120,3 +145,5 @@ const styles = StyleSheet.create({
     instructionList: {
     },
 });
+
+export default Instruction
