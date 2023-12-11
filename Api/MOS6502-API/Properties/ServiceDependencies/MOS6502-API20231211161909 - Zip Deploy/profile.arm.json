@@ -7,7 +7,7 @@
   "parameters": {
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "MOS6502-API20231128225336ResourceGroup",
+      "defaultValue": "MOS6502-API20231211161909ResourceGroup",
       "metadata": {
         "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
       }
@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "MOS6502-API20231128225336",
+      "defaultValue": "MOS6502-API20231211161909",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }
