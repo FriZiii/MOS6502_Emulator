@@ -32,6 +32,11 @@ namespace Application.Managments.PostProcessorProgram
                 Accumulator = processor.Accumulator,
                 YRegister = processor.YRegister,
                 MemoryMap = generateMemoryMapService.GetMemoryMap(),
+                CarryFlag = processor.CarryFlag,
+                DecimalFlag = processor.DecimalFlag,
+                NegativeFlag = processor.NegativeFlag,
+                OverflowFlag = processor.OverflowFlag,
+                ZeroFlag = processor.ZeroFlag,
             };
 
             return dto;

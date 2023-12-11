@@ -9,6 +9,11 @@ namespace Application.Managments
         public int XRegister { get; set; }
         public int ProgramCounter { get; set; }
         public string Program { get; set; }
+        public bool CarryFlag { get; set; }
+        public bool DecimalFlag { get; set; }
+        public bool NegativeFlag { get; set; }
+        public bool OverflowFlag { get; set; }
+        public bool ZeroFlag { get; set; }
         public IEnumerable<MemoryRowModel> MemoryMap { get; set; }
     }
 }
