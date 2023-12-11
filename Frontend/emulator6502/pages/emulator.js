@@ -2,11 +2,14 @@ import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Button, TextInput, Pressable, ActivityIndicator } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+
 import axios from "axios";
+import useAssembler from '../hooks/useAssembler'
 
 import MemoryMap from '../components/memory-map';
 
 const Emulator = ({ naviagtion }) => {
+  const { startAssembly } = useAssembler()
   const snapPoints = useMemo(() => ['8%', '55%'], []);
   const [programInput, setProgramInput] = useState('');
 
@@ -15,46 +18,57 @@ const Emulator = ({ naviagtion }) => {
     yRegister: 0,
     xRegister: 0,
     programCounter: 0,
-    program: '169,20',
+    program: '',
+    carryFlag: false,
+    decimalFlag: false,
+    negativeFlag: false,
+    overflowFlag: false,
+    zeroFlag: false,
     memoryMap: []
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const nextStepHandler = async () => {
-    setIsLoading(true);
-    try {
-      await axios.post(`https://mos6502-api20231211161909.azurewebsites.net/nextStep`, {
-        "program": result.program,
-        "programCounter": result.programCounter
-      }).then((response) => {
-        setResult(response.data.result);
-        setIsLoading(false);
-      });
-    } catch (error) {
-      setError(error);
-      alert(`Error: ${error}`)
-    } finally {
-      setIsLoading(false)
+    if (result.program <= 0) {
+      alert(`Load program first`)
+    }
+    else {
+      setIsLoading(true);
+      try {
+        await axios.post(`https://mos6502-api20231211161909.azurewebsites.net/nextStep`, {
+          "program": result.program,
+          "programCounter": result.programCounter
+        }).then((response) => {
+          setResult(response.data.result);
+          setIsLoading(false);
+        });
+      } catch (error) {
+        alert(`Error: ${error}`)
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 
   const loadProgramHandler = async () => {
-    console.log(result.memoryMap)
-    setIsLoading(true);
-    try {
-      await axios.post(`https://mos6502-api20231211161909.azurewebsites.net/loadProgram`, {
-        "program": programInput
-      }).then((response) => {
-        setResult(response.data.result);
-        setIsLoading(false);
-      });
-    } catch (error) {
-      setError(error);
-      alert(`Error: ${error}`)
-    } finally {
-      setIsLoading(false)
+    if (programInput.length <= 0) {
+      alert(`Enter program first`)
+    }
+    else {
+      setIsLoading(true);
+      try {
+        await axios.post(`https://mos6502-api20231211161909.azurewebsites.net/loadProgram`, {
+          "program": startAssembly(programInput).toString()
+        }).then((response) => {
+          setResult(response.data.result);
+          setIsLoading(false);
+        });
+      } catch (error) {
+        alert(`Error: ${error}`)
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 
@@ -80,7 +94,7 @@ const Emulator = ({ naviagtion }) => {
         <View style={styles.propertyStyle}>
           <Text style={styles.popertyTextStyle}>Accumulator</Text>
           {isLoading ? (
-            <ActivityIndicator color="#000"/>
+            <ActivityIndicator color="#000" />
           ) : (
             <Text>{result.accumulator}</Text>
           )}
@@ -88,7 +102,7 @@ const Emulator = ({ naviagtion }) => {
         <View style={styles.propertyStyle}>
           <Text style={styles.popertyTextStyle}>Counter</Text>
           {isLoading ? (
-            <ActivityIndicator color="#000"/>
+            <ActivityIndicator color="#000" />
           ) : (
             <Text>{result.programCounter}</Text>
           )}
@@ -96,7 +110,7 @@ const Emulator = ({ naviagtion }) => {
         <View style={styles.propertyStyle}>
           <Text style={styles.popertyTextStyle}>X Register</Text>
           {isLoading ? (
-            <ActivityIndicator color="#000"/>
+            <ActivityIndicator color="#000" />
           ) : (
             <Text>{result.xRegister}</Text>
           )}
@@ -104,7 +118,7 @@ const Emulator = ({ naviagtion }) => {
         <View style={styles.propertyStyle}>
           <Text style={styles.popertyTextStyle}>Y Register</Text>
           {isLoading ? (
-            <ActivityIndicator color="#000"/>
+            <ActivityIndicator color="#000" />
           ) : (
             <Text>{result.yRegister}</Text>
           )}
@@ -114,19 +128,44 @@ const Emulator = ({ naviagtion }) => {
       <Text style={styles.propertiesheader}>Flags State</Text>
       <View style={styles.flagsContainerStyle}>
         <View style={styles.flagStyle}>
-          <Text style={styles.flagTextStyle}>Negative Flag</Text><Text>1</Text>
+          <Text style={styles.flagTextStyle}>Negative Flag</Text>
+          {isLoading ? (
+            <ActivityIndicator color="#000" />
+          ) : (
+            <Text>{result.negativeFlag ? '1' : '0'}</Text>
+          )}
         </View>
         <View style={styles.flagStyle}>
-          <Text style={styles.flagTextStyle}>Overflow Flag</Text><Text>0</Text>
+          <Text style={styles.flagTextStyle}>Overflow Flag</Text>
+          {isLoading ? (
+            <ActivityIndicator color="#000" />
+          ) : (
+            <Text>{result.overflowFlag ? '1' : '0'}</Text>
+          )}
         </View>
         <View style={styles.flagStyle}>
-          <Text style={styles.flagTextStyle}>Decimal Flag</Text><Text>1</Text>
+          <Text style={styles.flagTextStyle}>Decimal Flag</Text>
+          {isLoading ? (
+            <ActivityIndicator color="#000" />
+          ) : (
+            <Text>{result.decimalFlag ? '1' : '0'}</Text>
+          )}
         </View>
         <View style={styles.flagStyle}>
-          <Text style={styles.flagTextStyle}>Zero Flag</Text><Text>0</Text>
+          <Text style={styles.flagTextStyle}>Zero Flag</Text>
+          {isLoading ? (
+            <ActivityIndicator color="#000" />
+          ) : (
+            <Text>{result.zeroFlag ? '1' : '0'}</Text>
+          )}
         </View>
         <View style={styles.lonelyflagStyle}>
-          <Text style={styles.flagTextStyle}>Carry Flag</Text><Text>0</Text>
+          <Text style={styles.flagTextStyle}>Carry Flag</Text>
+          {isLoading ? (
+            <ActivityIndicator color="#000" />
+          ) : (
+            <Text>{result.carryFlag ? '1' : '0'}</Text>
+          )}
         </View>
       </View>
 
