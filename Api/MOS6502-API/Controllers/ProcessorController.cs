@@ -14,15 +14,31 @@ namespace MOS6502_API.Controllers
         [HttpPost("/LoadProgram")]
         public IActionResult LoadProgram(PostProcessorProgram postProcessorProgram)
         {
-            var result = mediator.Send(postProcessorProgram);
-            return Ok(result);
+            try
+            {
+                var result = mediator.Send(postProcessorProgram);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Provided program is not supported");
+            }
         }
 
         [HttpPost("/NextStep")]
         public IActionResult NextStep(PostNextStep postNextStep)
         {
-            var resutl = mediator.Send(postNextStep);
-            return Ok(resutl);
+            try
+            {
+                var resutl = mediator.Send(postNextStep);
+                return Ok(resutl);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Something goes wrong!");
+            }
         }
     }
 }
